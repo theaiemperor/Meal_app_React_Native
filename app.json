@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Meal_app_React_Native",
-    "slug": "Meal_app_React_Native",
+    "name": "Meal App",
+    "slug": "meal_app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -11,9 +11,8 @@
       "resizeMode": "contain",
       "backgroundColor": "#2a1f17"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "newArchEnabled": true,
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
