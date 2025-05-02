@@ -1,5 +1,12 @@
 import { useLayoutEffect } from "react";
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import IconButton from "../Components/IconButton";
 import List from "../Components/List";
@@ -11,7 +18,6 @@ export default function MealsDetailScreen({ route, navigation }: any) {
   const mealId = route.params.mealId;
   const meal = MEALS.find((item) => item.id === mealId);
 
-  // favourite meal related stuff
   const favouriteMealIds = useSelector(
     (state: { favouriteMeals: { ids: string[] } }) => state.favouriteMeals.ids
   );
@@ -28,22 +34,22 @@ export default function MealsDetailScreen({ route, navigation }: any) {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerRight: () => {
-        return (
-          <IconButton
-            color="white"
-            icon={mealIsFavourite ? "star" : "star-outline"}
-            onPress={favouriteButtonHandler}
-          />
-        );
-      },
+      headerRight: () => (
+        <IconButton
+          color="white"
+          icon={mealIsFavourite ? "star" : "star-outline"}
+          onPress={favouriteButtonHandler}
+        />
+      ),
     });
   }, [favouriteButtonHandler, navigation]);
 
   return (
-    <View>
+    <View
+      style={Platform.OS === "web" ? styles.webWrapper : styles.defaultWrapper}
+    >
       {meal && (
-        <ScrollView style={styles.container}>
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
           <View style={styles.mainContainer}>
             <View style={styles.imageContainer}>
               <Image source={{ uri: meal.imageUrl }} style={styles.image} />
@@ -55,12 +61,8 @@ export default function MealsDetailScreen({ route, navigation }: any) {
               affordability={meal.affordability}
             />
           </View>
-          <View>
-            <List title="INGREDIENTS" data={meal.ingredients} />
-          </View>
-          <View>
-            <List title="STEPS" data={meal.steps} />
-          </View>
+          <List title="INGREDIENTS" data={meal.ingredients} />
+          <List title="STEPS" data={meal.steps} />
         </ScrollView>
       )}
     </View>
@@ -68,17 +70,24 @@ export default function MealsDetailScreen({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 2,
-    marginBottom: 5,
+  webWrapper: {
+    flex: 1,
+    alignItems: "center",
+  },
+  defaultWrapper: {
+    flex: 1,
+  },
+  scrollContainer: {
+    flexGrow: 1,
+    padding: 8,
   },
   mainContainer: {
-    borderStyle: "solid",
     borderWidth: 3,
     marginTop: 5,
     borderRadius: 10,
     borderColor: "#180b0b",
     backgroundColor: "#180b0b",
+    paddingBottom: 15,
   },
   imageContainer: {
     marginBottom: 20,
